@@ -1,21 +1,25 @@
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpHeaders;
+import org.apache.http.*;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.net.*;
 import java.lang.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.*;
 import java.io.*;
+
 
 public class CFJA {
     private String key = "";
@@ -39,41 +43,27 @@ public class CFJA {
         return lang;
     }
 
-    public static JSONObject request(String link) {
+
+    private static JSONObject request(String link){
+        CloseableHttpClient httpclient = HttpClients.createDefault();
         JSONObject json = new JSONObject();
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpGet request = new HttpGet(link);
-        request.addHeader("custom-key", "mkyong");
-        request.addHeader(HttpHeaders.USER_AGENT, "Googlebot");
-        try{
-            CloseableHttpResponse response = httpClient.execute(request);
-            HttpEntity entity = response.getEntity();
-            if (entity != null) {
-                // return it as a String
-                String result = EntityUtils.toString(entity);
-                //System.out.println(result);
-
-                JSONParser ps = new JSONParser();
-                json = (JSONObject) ps.parse(result);
-
-            }
-            response.close();
-            httpClient.close();
+        //Creating a HttpGet object
+        HttpGet httpget = new HttpGet(link);
+        try {
+            HttpResponse httpresponse = httpclient.execute(httpget);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(httpresponse.getEntity().getContent()));
+            //System.out.println(httpresponse.getStatusLine());
+            String ans = reader.readLine();
+            JSONParser parser = new JSONParser();
+            json = (JSONObject)parser.parse(ans);
+            reader.close();
         }catch (IOException e){
-
+            e.printStackTrace();
         }catch (ParseException e){
-
+            e.printStackTrace();
         }
-
-//        System.out.println(response.getProtocolVersion());              // HTTP/1.1
-//        System.out.println(response.getStatusLine().getStatusCode());   // 200
-//        System.out.println(response.getStatusLine().getReasonPhrase()); // OK
-//        System.out.println(response.getStatusLine().toString());        // HTTP/1.1 200 OK
-
         return json;
     }
-
-
 
     public ArrayList<Comment> blogEntryComments(int id) throws CodeforcesApiException{
         JSONObject json = request("https://codeforces.com/api/blogEntry.comments?blogEntryId=" + id + "&lang=" + lang);
@@ -111,7 +101,6 @@ public class CFJA {
         }
         return ans;
     }
-
     public BlogEntry blogEntryView(int id) throws CodeforcesApiException{
         JSONObject json = request("https://codeforces.com/api/blogEntry.view?blogEntryId=" + id + "&lang=" + lang);
         String status = (String)json.get("status");
@@ -130,10 +119,32 @@ public class CFJA {
             String[] afr = Arrays.copyOf(arr.toArray(), arr.toArray().length, String[].class);
             ans = new BlogEntry(a, g, b, c, d, e, f, afr, nd);
         }else{
-            System.out.println("FAILED");
             String comment = (String) json.get("comment");
             throw new CodeforcesApiException(comment);
         }
+        return ans;
+    }
+
+    public ArrayList<Hack> contestHacks(long contestId){
+        ArrayList<Hack> ans = new  ArrayList<>();
+        JSONObject json = request("https://codeforces.com/api/contest.hacks?contestId=" + contestId);
+        System.out.println(json.toJSONString());
+        if(json.get("status").equals("OK")){
+            JSONArray jsonres = (JSONArray) json.get("result");
+            JSONParser parser = new JSONParser();
+            try {
+                for(int i = 0; i < jsonres.size(); i++){
+                    JSONObject now = (JSONObject) parser.parse(jsonres.get(i).toString());
+                    ans.add(Hack.parseJSON(now));
+                }
+            }catch (ParseException e){
+                e.printStackTrace();
+            }
+        }else{
+            System.out.println("FAILED");
+        }
+
+
         return ans;
     }
 

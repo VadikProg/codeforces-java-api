@@ -3,12 +3,12 @@ public class CodeforcesApiException extends Exception {
     public CodeforcesApiException(String comment){
         this.comment = comment;
     }
-
     public String getComment() {
         return comment;
     }
-    public void setComment(String comment) {
-        this.comment = comment;
+    @Override
+    public void printStackTrace() {
+        super.printStackTrace();
     }
 
 }
