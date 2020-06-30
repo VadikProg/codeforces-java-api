@@ -33,5 +33,12 @@
         </dependency>
     </dependencies>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Vadim Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/VadikProg/codeforces-java-api</url>
+        </repository>
+    </distributionManagement>
 
 </project>
