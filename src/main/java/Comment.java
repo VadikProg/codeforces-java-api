@@ -87,10 +87,10 @@ public class Comment {
         long id = (long)json.get("id");
         long creationTimeSeconds = (long)json.get("creationTimeSeconds");
         String commentatorHandle = (String) json.get("comment");
-        String locale;
-        String text;
-        long parentCommentID;
-        long rating;
+        String locale = (String) json.get("locale");
+        String text = (String) json.get("text");
+        long parentCommentID = json.get("comment") != null ? (long) json.get("comment") : -1;
+        long rating = (long) json.get("rating");
         return new Comment(id, creationTimeSeconds, commentatorHandle, locale, text, parentCommentID, rating);
     }
 

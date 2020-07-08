@@ -80,18 +80,7 @@ public class CFJA {
 
                 for(int i = 0; i < result.size(); i++){
                     JSONObject now = (JSONObject)ps.parse(result.get(i).toString());
-
-                    long a = (long) now.get("id");
-                    long b = (long) now.get("creationTimeSeconds");
-                    String c = (String) now.get("commentatorHandle");
-                    String d = (String) now.get("locale");
-                    String e = (String) now.get("text");
-                    long f = -1;
-                    if(now.get("parentCommentId") != null){
-                        f = (long)now.get("parentCommentId");
-                    }
-                    long g = (long)now.get("rating");
-                    ans.add(new Comment(a, b, c, d, e, f, g));
+                    ans.add(Comment.parseJSON(now));
                 }
             }else{
                 String comment = (String) json.get("comment");
