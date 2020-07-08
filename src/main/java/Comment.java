@@ -1,3 +1,5 @@
+import org.json.simple.JSONObject;
+
 import java.util.Objects;
 
 public class Comment {
@@ -11,7 +13,7 @@ public class Comment {
     private long parentCommentID;
     private long rating;
 
-    public Comment(long id, long creationTimeSeconds, String commentatorHandle, String locale, String text, long parentCommentID, long rating){
+    public Comment(long id, long creationTimeSeconds, String commentatorHandle, String locale, String text, long parentCommentID, long rating) {
         this.id = id;
         this.creationTimeSeconds = creationTimeSeconds;
         this.commentatorHandle = commentatorHandle;
@@ -79,6 +81,17 @@ public class Comment {
 
     public String getCommentatorHandle() {
         return commentatorHandle;
+    }
+
+    public static Comment parseJSON(JSONObject json) {
+        long id = (long)json.get("id");
+        long creationTimeSeconds = (long)json.get("creationTimeSeconds");
+        String commentatorHandle = (String) json.get("comment");
+        String locale;
+        String text;
+        long parentCommentID;
+        long rating;
+        return new Comment(id, creationTimeSeconds, commentatorHandle, locale, text, parentCommentID, rating);
     }
 
 }

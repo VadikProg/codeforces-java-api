@@ -13,6 +13,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import java.lang.*;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -97,7 +98,7 @@ public class CFJA {
                 throw new CodeforcesApiException(comment);
             }
         }catch (ParseException e){
-
+            e.printStackTrace();
         }
         return ans;
     }
@@ -124,11 +125,10 @@ public class CFJA {
         }
         return ans;
     }
-
-    public ArrayList<Hack> contestHacks(long contestId){
+    public ArrayList<Hack> contestHacks(long contestId) throws CodeforcesApiException {
         ArrayList<Hack> ans = new  ArrayList<>();
         JSONObject json = request("https://codeforces.com/api/contest.hacks?contestId=" + contestId);
-        System.out.println(json.toJSONString());
+        //System.out.println(json.toJSONString());
         if(json.get("status").equals("OK")){
             JSONArray jsonres = (JSONArray) json.get("result");
             JSONParser parser = new JSONParser();
@@ -141,10 +141,31 @@ public class CFJA {
                 e.printStackTrace();
             }
         }else{
-            System.out.println("FAILED");
+            String comment = (String) json.get("comment");
+            throw new CodeforcesApiException(comment);
         }
 
 
+        return ans;
+    }
+    public ArrayList<Contest> contestList(boolean gym) throws CodeforcesApiException{
+        ArrayList<Contest> ans = new ArrayList<>();
+        JSONObject json = request("https://codeforces.com/api/contest.list?gym=" + String.valueOf(gym));
+        if(json.get("status").equals("OK")){
+            JSONArray jsonres = (JSONArray) json.get("result");
+            JSONParser parser = new JSONParser();
+            try {
+                for(int i = 0; i < jsonres.size(); i++){
+                    JSONObject now = (JSONObject) parser.parse(jsonres.get(i).toString());
+                    ans.add(Contest.parseJSON(now));
+                }
+            }catch (ParseException e){
+                e.printStackTrace();
+            }
+        }else{
+            String comment = (String) json.get("comment");
+            throw new CodeforcesApiException(comment);
+        }
         return ans;
     }
 

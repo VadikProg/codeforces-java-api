@@ -103,5 +103,6 @@ public class BlogEntry {
                 ", rating=" + rating +
                 '}';
     }
+
 }
 
