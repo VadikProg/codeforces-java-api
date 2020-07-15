@@ -10,6 +10,11 @@ public class JudgeProtocol {
         this.protocol = protocol;
         this.verdict = verdict;
     }
+    public JudgeProtocol(JSONObject json){
+        boolean manual = Boolean.valueOf((String) json.get("manual"));
+        String protocol = (String) json.get("protocol");
+        String verdict = (String) json.get("verdict");
+    }
 
     public boolean isManual() {
         return manual;
@@ -22,11 +27,8 @@ public class JudgeProtocol {
     }
 
     public static JudgeProtocol parseJSON(JSONObject json){
-        boolean manual = Boolean.valueOf((String) json.get("manual"));
-        String protocol = (String) json.get("protocol");
-        String verdict = (String) json.get("verdict");
 
-        return new JudgeProtocol(manual, protocol, verdict);
+        return new JudgeProtocol(json);
     }
 
 }

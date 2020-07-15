@@ -14,18 +14,31 @@ public class Problem {
     private double points;
     private long rating;
     private ArrayList<String> tags;
-    public Problem(long contestId, String problemsetName, String index, String name, Type type, ArrayList<String> tags){
+
+    public Problem(long contestId, String problemsetName, String index, String name, Type type, double points, long rating, ArrayList<String> tags) {
         this.contestId = contestId;
         this.problemsetName = problemsetName;
         this.index = index;
         this.name = name;
         this.type = type;
-        this.tags = tags;
-    }
-    public Problem(long contestId, String problemsetName, String index, String name, Type type,double points, long rating, ArrayList<String> tags){
-        this(contestId, problemsetName, index, name, type, tags);
         this.points = points;
         this.rating = rating;
+        this.tags = tags;
+    }
+    public Problem(JSONObject json){
+        long contestId = json.get("contestId") == null ? -1 : (long) json.get("contestId");
+        String  problemsetName = (String) json.get("problemsetName");
+        String index = (String)json.get("index");
+        String name = (String)json.get("name");
+        Type type = Type.valueOf((String) json.get("type"));
+        double points = json.get("points") == null ? -1 : (double)json.get("points");
+        long rating = json.get("rating") == null ? -1 : (long) json.get("rating");
+        ArrayList<String> tags = new ArrayList<>();
+        JSONArray tds = (JSONArray) json.get("tags");
+        JSONParser jfk = new JSONParser();
+        for(int i = 0; i < tds.size(); i++){
+            tags.add(tds.get(i).toString());
+        }
     }
 
     public long getContestId() {
@@ -54,21 +67,7 @@ public class Problem {
     }
 
     public static Problem parseJSON(JSONObject json){
-        long contestId = json.get("contestId") == null ? -1 : (long) json.get("contestId");
-        String  problemsetName = (String) json.get("problemsetName");
-        String index = (String)json.get("index");
-        String name = (String)json.get("name");
-        Type type = Type.valueOf((String) json.get("type"));
-        double points = json.get("points") == null ? -1 : (double)json.get("points");
-        long rating = json.get("rating") == null ? -1 : (long) json.get("rating");
-        ArrayList<String> tags = new ArrayList<>();
-        JSONArray tds = (JSONArray) json.get("tags");
-        JSONParser jfk = new JSONParser();
-        for(int i = 0; i < tds.size(); i++){
-            tags.add(tds.get(i).toString());
-        }
-        Problem ans = new Problem(contestId, problemsetName, index, name, type, points, rating, tags);
-        return ans;
+        return new Problem(json);
     }
 
 }

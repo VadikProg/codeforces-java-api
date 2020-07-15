@@ -101,6 +101,5 @@ public class BlogEntry {
         return new BlogEntry(json);
     }
 
-
 }
 
