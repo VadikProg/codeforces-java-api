@@ -2,5 +2,5 @@
 
 ---
 **Build status:**  
-![CI](https://github.com/VadikProg/codeforces-java-api/workflows/CI/badge.svg?branch=master&event=push)
+![Master Branch](https://github.com/VadikProg/codeforces-java-api/workflows/Master%20Branch/badge.svg?branch=master&event=push)
 ---
