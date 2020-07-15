@@ -41,7 +41,24 @@ public class Contest {
         this.season = season;
     }
     //Delete prefere commit
-    public Contest() {
+    public Contest(JSONObject json) {
+        long id = (long) json.get("id");
+        String name = (String)json.get("name");
+        ContestType type = ContestType.valueOf((String) json.get("type"));
+        ContestPhase phase = ContestPhase.valueOf((String)json.get("phase"));
+        boolean frozen = (boolean) json.get("frozen");
+        long durationSeconds = (long) json.get("durationSeconds");
+        long startTimeSeconds = (long) json.get("startTimeSeconds") ;
+        long relativeTimeSeconds = (long) json.get("relativeTimeSeconds");
+        String preparedBy = (String)json.get("preparedBy");
+        String websiteUrl = (String)json.get("websiteUrl");
+        String description = (String)json.get("description");
+        int difficult = (int)json.get("difficult");
+        String kind = (String)json.get("kind");
+        String icpcRegion = (String)json.get("icpcRegion");
+        String country = (String)json.get("country");
+        String city = (String)json.get("city");
+        String season = (String)json.get("season");
     }
 
 
@@ -146,24 +163,7 @@ public class Contest {
                 '}';
     }
     public static Contest parseJSON(JSONObject json){
-        long id = (long) json.get("id");
-        String name = (String)json.get("name");
-        ContestType type = ContestType.valueOf((String) json.get("type"));
-        ContestPhase phase = ContestPhase.valueOf((String)json.get("phase"));
-        boolean frozen = (boolean) json.get("frozen");
-        long durationSeconds = (long) json.get("durationSeconds");
-        long startTimeSeconds = (long) json.get("startTimeSeconds") ;
-        long relativeTimeSeconds = (long) json.get("relativeTimeSeconds");
-        String preparedBy = (String)json.get("preparedBy");
-        String websiteUrl = (String)json.get("websiteUrl");
-        String description = (String)json.get("description");
-        int difficult = (int)json.get("difficult");
-        String kind = (String)json.get("kind");
-        String icpcRegion = (String)json.get("icpcRegion");
-        String country = (String)json.get("country");
-        String city = (String)json.get("city");
-        String season = (String)json.get("season");
-        return new Contest(id ,name, type, phase, frozen, durationSeconds, startTimeSeconds, relativeTimeSeconds, preparedBy, websiteUrl, description, difficult, kind, icpcRegion, country, city, season);
+        return new Contest(json);
     }
 
 }

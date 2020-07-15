@@ -96,18 +96,8 @@ public class CFJA {
         String status = (String)json.get("status");
         BlogEntry ans = null;
         if(status.equals("OK")){
-            JSONObject res = (JSONObject) json.get("result");
-            long a = (long) res.get("id");
-            String g = (String)res.get("originalLocale");
-            long b = (long)res.get("creationTimeSeconds");
-            String c = (String) res.get("authorHandle");
-            String d = (String) res.get("title");
-            long e = (long)res.get("modificationTimeSeconds");
-            boolean f = (boolean)res.get("allowViewHistory");
-            JSONArray arr = (JSONArray) res.get("tags");
-            long nd = (long)res.get("rating");
-            String[] afr = Arrays.copyOf(arr.toArray(), arr.toArray().length, String[].class);
-            ans = new BlogEntry(a, g, b, c, d, e, f, afr, nd);
+            JSONObject now = (JSONObject) json.get("result");
+            ans = new BlogEntry(now);
         }else{
             String comment = (String) json.get("comment");
             throw new CodeforcesApiException(comment);

@@ -20,6 +20,18 @@ public class Hack {
         this.test = test;
         this.judgeProtocol = judgeProtocol;
     }
+
+    public Hack(JSONObject json){
+        long id = (long) json.get("id");
+        long creationTimeSeconds = (long) json.get("creationTimeSeconds");
+        Party hacker = Party.parseJSON((JSONObject) json.get("hacker"));
+        Party defender = Party.parseJSON((JSONObject) json.get("defender"));
+        Verdict verdict = Verdict.valueOf((String) json.get("verdict"));
+        Problem problem = Problem.parseJSON((JSONObject) json.get("problem"));
+        String test = (String)json.get("test");
+        JudgeProtocol judgeProtocol = JudgeProtocol.parseJSON((JSONObject) json.get("judgeProtocol"));
+    }
+
     public long getId() {
         return id;
     }
@@ -57,15 +69,7 @@ public class Hack {
     }
 
     public static Hack parseJSON(JSONObject json){
-        long id = (long) json.get("id");
-        long creationTimeSeconds = (long) json.get("creationTimeSeconds");
-        Party hacker = Party.parseJSON((JSONObject) json.get("hacker"));
-        Party defender = Party.parseJSON((JSONObject) json.get("defender"));
-        Verdict verdict = Verdict.valueOf((String) json.get("verdict"));
-        Problem problem = Problem.parseJSON((JSONObject) json.get("problem"));
-        String test = (String)json.get("test");
-        JudgeProtocol judgeProtocol = JudgeProtocol.parseJSON((JSONObject) json.get("judgeProtocol"));
-        return new Hack(id, creationTimeSeconds, hacker, defender, verdict, problem, test, judgeProtocol);
+        return new Hack(json);
     }
 
 

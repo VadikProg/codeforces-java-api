@@ -22,7 +22,15 @@ public class Comment {
         this.parentCommentID = parentCommentID;
         this.rating = rating;
     }
-
+    public Comment(JSONObject json){
+        long id = (long)json.get("id");
+        long creationTimeSeconds = (long)json.get("creationTimeSeconds");
+        String commentatorHandle = (String) json.get("comment");
+        String locale = (String) json.get("locale");
+        String text = (String) json.get("text");
+        long parentCommentID = json.get("comment") != null ? (long) json.get("comment") : -1;
+        long rating = (long) json.get("rating");
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -84,14 +92,7 @@ public class Comment {
     }
 
     public static Comment parseJSON(JSONObject json) {
-        long id = (long)json.get("id");
-        long creationTimeSeconds = (long)json.get("creationTimeSeconds");
-        String commentatorHandle = (String) json.get("comment");
-        String locale = (String) json.get("locale");
-        String text = (String) json.get("text");
-        long parentCommentID = json.get("comment") != null ? (long) json.get("comment") : -1;
-        long rating = (long) json.get("rating");
-        return new Comment(id, creationTimeSeconds, commentatorHandle, locale, text, parentCommentID, rating);
+        return new Comment(json);
     }
 
 }
