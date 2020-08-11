@@ -1,7 +1,10 @@
-<center><h1>Codeforces Java API</h1></center>
-**Build status:**  
-![Master Branch](https://github.com/VadikProg/codeforces-java-api/workflows/Master%20Branch/badge.svg?branch=master&event=push)
+Codefoces Java API
 ---
+**Build status:**
+---
+![Master Branch](https://github.com/VadikProg/codeforces-java-api/workflows/Master%20Branch/badge.svg?branch=master&event=push)
+
+
 **Download:** [![](https://jitpack.io/v/VadikProg/codeforces-java-api.svg)](https://jitpack.io/#VadikProg/codeforces-java-api)
 ---
 **Maven**
